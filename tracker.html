@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Coverage Tracker</title>
+<link rel="stylesheet" href="style.css">
+<script src="app.js"></script>
+</head>
+
+<body onload="displayCoverage()">
+
+<nav>
+<a href="index.html">Dashboard</a>
+<a href="tracker.html">Coverage</a>
+</nav>
+
+<div class="container">
+
+<h2>Add Coverage</h2>
+
+<input id="client" placeholder="Client Name">
+<input id="pub" placeholder="Publication">
+<input id="link" placeholder="Article Link">
+
+<button onclick="addCoverage()">Add</button>
+
+<h2>Coverage List</h2>
+<div id="coverageList"></div>
+
+</div>
+</body>
+</html>
