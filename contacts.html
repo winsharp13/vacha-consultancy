@@ -6,29 +6,31 @@
 <script src="app.js"></script>
 </head>
 
-<body onload="displayContacts()">
+<body onload="loadContacts()">
 
-<nav>
+<div class="sidebar">
+<h2>PR Tool</h2>
 <a href="index.html">Dashboard</a>
 <a href="contacts.html">Contacts</a>
-</nav>
+</div>
 
-<div class="container">
+<div class="main">
 
 <h2>Media Contacts</h2>
 
-<input id="search" placeholder="Search contacts..." onkeyup="displayContacts()">
+<input id="search" placeholder="Search..." onkeyup="loadContacts()">
 
 <div class="card">
 <input id="name" placeholder="Name">
 <input id="email" placeholder="Email">
 <input id="category" placeholder="Category">
-<button onclick="addContact()">Add Contact</button>
+<button onclick="addContact()">Add</button>
 </div>
 
-<button onclick="copyEmails()">📋 Copy All Emails</button>
+<button onclick="exportCSV()">Download CSV</button>
+<button onclick="copyEmails()">Copy Emails</button>
 
-<div id="contactList"></div>
+<div id="list"></div>
 
 </div>
 </body>
