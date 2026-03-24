@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PR Dashboard</title>
 <link rel="stylesheet" href="style.css">
 <script src="app.js"></script>
 </head>
@@ -20,18 +19,14 @@
 <div class="main">
 <h1>Dashboard</h1>
 
-<div class="card">📊 Total Contacts: <span id="totalContacts"></span></div>
-<div class="card">📢 Total Coverage: <span id="totalCoverage"></span></div>
-
-</div>
+<div class="card">Total Contacts: <span id="c"></span></div>
+<div class="card">Total Coverage: <span id="cov"></span></div>
 
 <script>
-document.getElementById("totalContacts").innerText =
-(JSON.parse(localStorage.getItem("contacts")) || []).length;
-
-document.getElementById("totalCoverage").innerText =
-(JSON.parse(localStorage.getItem("coverage")) || []).length;
+c.innerText = (JSON.parse(localStorage.getItem("contacts"))||[]).length;
+cov.innerText = (JSON.parse(localStorage.getItem("coverage"))||[]).length;
 </script>
 
+</div>
 </body>
 </html>
