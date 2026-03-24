@@ -26,14 +26,13 @@ function loadContacts() {
       <div>
         <b>${d.name}</b><br>
         ${d.email}<br>
-        ${d.category}
+        <span class="tag">${d.category}</span>
       </div>
-      <button onclick="deleteContact(${i})">X</button>
+      <button onclick="deleteContact(${i})">Delete</button>
     </div>`;
   });
 
-  if(document.getElementById("list"))
-    list.innerHTML = html;
+  if(document.getElementById("list")) list.innerHTML = html;
 }
 
 function deleteContact(i) {
@@ -46,7 +45,6 @@ function deleteContact(i) {
 function exportCSV() {
   let data = JSON.parse(localStorage.getItem("contacts")) || [];
   let csv = "Name,Email,Category\n";
-
   data.forEach(d => {
     csv += `${d.name},${d.email},${d.category}\n`;
   });
@@ -65,16 +63,15 @@ function copyEmails() {
 
 // PR GENERATOR
 function generatePR() {
-  document.getElementById("output").innerHTML = `
-    <h2>${headline.value}</h2>
-    <p>${company.value}</p>
-    <p>${content.value}</p>
+  output.innerHTML = `
+  <h2>${headline.value}</h2>
+  <p><b>${company.value}</b></p>
+  <p>${content.value}</p>
   `;
 }
 
 function downloadDoc() {
-  let html = output.innerHTML;
-  let blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+  let blob = new Blob(['\ufeff', output.innerHTML], { type: 'application/msword' });
   let a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "press-release.doc";
@@ -115,12 +112,11 @@ function loadCoverage() {
 // REPORT
 function generateReport() {
   let data = JSON.parse(localStorage.getItem("coverage")) || [];
-
   let html = `<h3>Total Coverage: ${data.length}</h3>`;
 
   data.forEach(d => {
     html += `<p>${d.client}</p>`;
   });
 
-  document.getElementById("report").innerHTML = html;
+  report.innerHTML = html;
 }
