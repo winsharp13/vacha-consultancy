@@ -3,25 +3,35 @@
 <head>
 <title>PR Dashboard</title>
 <link rel="stylesheet" href="style.css">
+<script src="app.js"></script>
 </head>
+
 <body>
 
-<nav>
+<div class="sidebar">
+<h2>PR Tool</h2>
 <a href="index.html">Dashboard</a>
 <a href="contacts.html">Contacts</a>
 <a href="press.html">PR Generator</a>
 <a href="tracker.html">Coverage</a>
 <a href="report.html">Reports</a>
-</nav>
+</div>
 
-<div class="container">
-<h1>PR Dashboard</h1>
+<div class="main">
+<h1>Dashboard</h1>
 
-<div class="card">📊 Manage Media Contacts</div>
-<div class="card">📝 Generate Press Releases</div>
-<div class="card">📢 Track Coverage</div>
-<div class="card">📈 Generate Reports</div>
+<div class="card">📊 Total Contacts: <span id="totalContacts"></span></div>
+<div class="card">📢 Total Coverage: <span id="totalCoverage"></span></div>
 
 </div>
+
+<script>
+document.getElementById("totalContacts").innerText =
+(JSON.parse(localStorage.getItem("contacts")) || []).length;
+
+document.getElementById("totalCoverage").innerText =
+(JSON.parse(localStorage.getItem("coverage")) || []).length;
+</script>
+
 </body>
 </html>
