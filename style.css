@@ -1,27 +1,27 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   display: flex;
-  background: #f8fafc;
+  background: #f1f5f9;
 }
 
 .sidebar {
-  width: 220px;
+  width: 240px;
   background: #0f172a;
-  height: 100vh;
   color: white;
+  height: 100vh;
   padding: 20px;
 }
 
 .sidebar h2 {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .sidebar a {
   display: block;
-  color: #cbd5f5;
+  color: #cbd5e1;
+  margin: 12px 0;
   text-decoration: none;
-  margin: 10px 0;
 }
 
 .sidebar a:hover {
@@ -30,33 +30,48 @@ body {
 
 .main {
   flex: 1;
-  padding: 20px;
+  padding: 30px;
 }
 
 .card {
   background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
 }
 
 input, textarea {
   width: 100%;
-  padding: 10px;
-  margin-top: 8px;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 button {
-  padding: 10px;
+  padding: 10px 14px;
   margin-top: 10px;
+  border: none;
+  border-radius: 8px;
   background: #2563eb;
   color: white;
-  border: none;
   cursor: pointer;
+}
+
+button:hover {
+  background: #1e40af;
 }
 
 .flex {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.tag {
+  background: #e0f2fe;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
 }
