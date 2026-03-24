@@ -1,28 +1,61 @@
-function displayContacts() {
-  let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+function addContact() {
+  let data = JSON.parse(localStorage.getItem("contacts")) || [];
+
+  data.push({
+    name: name.value,
+    email: email.value,
+    category: category.value
+  });
+
+  localStorage.setItem("contacts", JSON.stringify(data));
+  loadContacts();
+}
+
+function loadContacts() {
+  let data = JSON.parse(localStorage.getItem("contacts")) || [];
   let search = document.getElementById("search").value.toLowerCase();
-  let output = "";
+  let html = "";
 
-  contacts
-    .filter(c => c.name.toLowerCase().includes(search) || c.category.toLowerCase().includes(search))
-    .forEach((c, i) => {
-      output += `
-      <div class="card flex">
-        <div>
-          <b>${c.name}</b><br>
-          ${c.email}<br>
-          <span class="tag">${c.category}</span>
-        </div>
-        <button onclick="deleteContact(${i})">❌</button>
-      </div>`;
-    });
+  data.filter(d =>
+    d.name.toLowerCase().includes(search) ||
+    d.category.toLowerCase().includes(search)
+  ).forEach((d,i) => {
+    html += `
+    <div class="card flex">
+      <div>
+        <b>${d.name}</b><br>
+        ${d.email}<br>
+        ${d.category}
+      </div>
+      <button onclick="deleteContact(${i})">X</button>
+    </div>`;
+  });
 
-  document.getElementById("contactList").innerHTML = output;
+  list.innerHTML = html;
+}
+
+function deleteContact(i) {
+  let data = JSON.parse(localStorage.getItem("contacts"));
+  data.splice(i,1);
+  localStorage.setItem("contacts", JSON.stringify(data));
+  loadContacts();
+}
+
+function exportCSV() {
+  let data = JSON.parse(localStorage.getItem("contacts")) || [];
+  let csv = "Name,Email,Category\n";
+  data.forEach(d => {
+    csv += `${d.name},${d.email},${d.category}\n`;
+  });
+
+  let blob = new Blob([csv]);
+  let a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "contacts.csv";
+  a.click();
 }
 
 function copyEmails() {
-  let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
-  let emails = contacts.map(c => c.email).join(", ");
-  navigator.clipboard.writeText(emails);
-  alert("Emails copied!");
+  let data = JSON.parse(localStorage.getItem("contacts")) || [];
+  navigator.clipboard.writeText(data.map(d => d.email).join(", "));
 }
