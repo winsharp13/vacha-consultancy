@@ -1,32 +1,233 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">
-<script src="app.js"></script>
+<title>PR Suite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  background: #f1f5f9;
+}
+
+.sidebar {
+  width: 240px;
+  background: #0f172a;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+}
+
+.sidebar div {
+  margin: 15px 0;
+  cursor: pointer;
+  color: #cbd5e1;
+}
+
+.sidebar div:hover {
+  color: white;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1e40af;
+}
+
+.hidden { display: none; }
+
+img.preview {
+  max-width: 120px;
+  margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="sidebar">
-<h2>PR Tool</h2>
-<a href="index.html">Dashboard</a>
-<a href="contacts.html">Contacts</a>
-<a href="press.html">PR Generator</a>
-<a href="tracker.html">Coverage</a>
-<a href="report.html">Reports</a>
+<h2>PR Suite</h2>
+<div onclick="show('kit')">Media Kit</div>
+<div onclick="show('pr')">PR Writer</div>
+<div onclick="show('coverage')">Coverage</div>
+<div onclick="show('media')">Media DB</div>
 </div>
 
 <div class="main">
-<h1>Dashboard</h1>
 
-<div class="card">Total Contacts: <span id="c"></span></div>
-<div class="card">Total Coverage: <span id="cov"></span></div>
+<!-- MEDIA KIT -->
+<div id="kit">
+<h2>Media Kit Builder</h2>
 
-<script>
-c.innerText = (JSON.parse(localStorage.getItem("contacts"))||[]).length;
-cov.innerText = (JSON.parse(localStorage.getItem("coverage"))||[]).length;
-</script>
+<div class="card">
+<input id="clientName" placeholder="Client Name">
+<input type="file" id="logoInput">
+<textarea id="desc" placeholder="Company Description"></textarea>
+<textarea id="achievements" placeholder="Achievements"></textarea>
+
+<button onclick="generateKit()">Generate</button>
+
+<div id="kitOutput" class="card"></div>
+</div>
+</div>
+
+<!-- PR WRITER -->
+<div id="pr" class="hidden">
+<h2>PR Writer</h2>
+
+<div class="card">
+<input id="headline" placeholder="Headline">
+<input id="company" placeholder="Company">
+<textarea id="content" placeholder="Content"></textarea>
+
+<button onclick="generatePR()">Generate</button>
+<button onclick="copyPR()">Copy</button>
+
+<div id="prOutput" class="card"></div>
+</div>
+</div>
+
+<!-- COVERAGE -->
+<div id="coverage" class="hidden">
+<h2>Coverage Tracker</h2>
+
+<div class="card">
+<input id="covClient" placeholder="Client">
+<input id="covLink" placeholder="Article Link">
+
+<button onclick="addCoverage()">Add</button>
+</div>
+
+<div id="coverageList"></div>
+</div>
+
+<!-- MEDIA DB -->
+<div id="media" class="hidden">
+<h2>Media Database</h2>
+
+<div class="card">
+<input id="journo" placeholder="Journalist Name">
+<input id="pub" placeholder="Publication">
+<input id="topic" placeholder="Category">
+
+<button onclick="addMedia()">Add</button>
+</div>
+
+<div id="mediaList"></div>
+</div>
 
 </div>
+
+<script>
+// TAB SWITCH
+function show(id){
+  document.querySelectorAll(".main > div").forEach(d=>d.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+// MEDIA KIT
+function generateKit(){
+  let logo = document.getElementById("logoInput").files[0];
+  let reader = new FileReader();
+
+  reader.onload = function(){
+    document.getElementById("kitOutput").innerHTML = `
+      <h2>${clientName.value}</h2>
+      <img src="${reader.result}" class="preview">
+      <p>${desc.value}</p>
+      <h4>Achievements</h4>
+      <p>${achievements.value}</p>
+    `;
+  }
+
+  if(logo) reader.readAsDataURL(logo);
+}
+
+// PR
+function generatePR(){
+  prOutput.innerHTML = `
+    <h2>${headline.value}</h2>
+    <p><b>${company.value}</b></p>
+    <p>${content.value}</p>
+  `;
+}
+
+function copyPR(){
+  navigator.clipboard.writeText(prOutput.innerText);
+}
+
+// COVERAGE
+function addCoverage(){
+  let data = JSON.parse(localStorage.getItem("cov")) || [];
+  data.push({c: covClient.value, l: covLink.value});
+  localStorage.setItem("cov", JSON.stringify(data));
+  loadCoverage();
+}
+
+function loadCoverage(){
+  let data = JSON.parse(localStorage.getItem("cov")) || [];
+  let html = "";
+  data.forEach(d=>{
+    html += `<div class="card"><b>${d.c}</b><br><a href="${d.l}" target="_blank">View</a></div>`;
+  });
+  coverageList.innerHTML = html;
+}
+loadCoverage();
+
+// MEDIA DB
+function addMedia(){
+  let data = JSON.parse(localStorage.getItem("media")) || [];
+  data.push({n: journo.value, p: pub.value, t: topic.value});
+  localStorage.setItem("media", JSON.stringify(data));
+  loadMedia();
+}
+
+function loadMedia(){
+  let data = JSON.parse(localStorage.getItem("media")) || [];
+  let html = "";
+  data.forEach(d=>{
+    html += `<div class="card"><b>${d.n}</b><br>${d.p}<br>${d.t}</div>`;
+  });
+  mediaList.innerHTML = html;
+}
+loadMedia();
+
+</script>
+
 </body>
 </html>
